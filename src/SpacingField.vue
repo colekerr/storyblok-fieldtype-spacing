@@ -18,11 +18,13 @@
 import { BOX_EDGES, SUPPORTED_STYLE_UNITS } from "./constants.js";
 import { formStore } from "./store.js";
 
-const STYLE_UNIT_CONFIGS =  SUPPORTED_STYLE_UNITS.map(curUnit => ({ value: curUnit }))
+const STYLE_UNIT_CONFIGS =  SUPPORTED_STYLE_UNITS.map(curUnit => ({ value: curUnit }));
+
 const FIELD_ERROR_CONFIGS = {
   "invalid_amount_negative": "Amount cannot be negative",
-  "invalid_amount_nan": "Amount must be a number"
-}
+  "invalid_amount_nan": "Amount must be a number",
+};
+
 export default {
   computed: {
     label() {
@@ -32,27 +34,21 @@ export default {
     },
     privateState() {
       const { errors, selectedBreakpoint, values } = formStore.state;
-      console.log("SpacingField privateState selectedBreakpoint: " + selectedBreakpoint)
-      console.log("SpacingField privateState formStore: " + JSON.stringify(formStore, null, 2))
       const { amount = "", unit = "px"} = (values[selectedBreakpoint] || {})[this.boxEdge] || {};
       
-      const fieldError = (errors[selectedBreakpoint] || {})[this.boxEdge]
+      const fieldError = (errors[selectedBreakpoint] || {})[this.boxEdge];
 
-      console.log("SpacingField privateState fieldError: " + fieldError)
-      console.log("SpacingField privateState amount: " + amount);
-      console.log("SpacingField privateState unit: " + unit);
-  
       return {
         amount: amount,
         unit: unit,
-        error: FIELD_ERROR_CONFIGS[fieldError]
-      }
-    }
+        error: FIELD_ERROR_CONFIGS[fieldError],
+      };
+    },
   },
   data() {
     return {
       styleUnits: STYLE_UNIT_CONFIGS,
-    }
+    };
   },
   methods: {
     onChangeAmount(evt) {
@@ -61,9 +57,9 @@ export default {
         {
           [selectedBreakpoint]: {
             [this.boxEdge]: { amount: evt.target.value, unit: this.privateState.unit}
-          }
-        }
-      )
+          },
+        },
+      );
     },
     onChangeUnit(evt) {
       const { selectedBreakpoint } = formStore.state;
@@ -71,18 +67,18 @@ export default {
         {
           [selectedBreakpoint]: {
             [this.boxEdge]: { amount: this.privateState.amount, unit: evt.target.value }
-          }
-        }
-      )
-    }
+          },
+        },
+      );
+    },
   },
   props: {
     boxEdge: {
-      type: String,
       required: true,
+      type: String,
       validator: value => {
         return BOX_EDGES.includes(value);
-      }
+      },
     },
   },
 };

@@ -28,20 +28,20 @@ export default {
       return "Device (Min. Width)";
     },
     privateState() {
-      const isDisabled = formStore.getErrors().some(curError => curError.breakpoint === formStore.state.selectedBreakpoint)
+      const isDisabled = formStore.getErrors().some(curError => curError.breakpoint === formStore.state.selectedBreakpoint);
       
       return {
         isDisabled,
-        selected: formStore.state.selectedBreakpoint
-      }
-    }
+        selected: formStore.state.selectedBreakpoint,
+      };
+    },
   },
   methods: {
     onChange(evt) {
-      const isDisabled = formStore.getErrors().some(curError => curError.breakpoint === formStore.state.selectedBreakpoint)
+      const isDisabled = formStore.getErrors().some(curError => curError.breakpoint === formStore.state.selectedBreakpoint);
       
       if (!isDisabled) {
-        formStore.setSelectedBreakpoint(evt.target.value)
+        formStore.setSelectedBreakpoint(evt.target.value);
       }
     }
   }

@@ -1,7 +1,7 @@
 import { INITIAL_PLUGIN_CONFIG } from "./constants.js";
 
 export const formStore = {
-  debug: true,
+  isDebugMode: false,
   state: {
     config: INITIAL_PLUGIN_CONFIG,
     selectedBreakpoint: "base",
@@ -19,7 +19,10 @@ export const formStore = {
       base: undefined,
       desktop: undefined,
       tablet: undefined,
-    }
+    },
+  },
+  debug(...args) {
+    if (this.isDebugMode) console.log(...args);
   },
   getErrors() {
     const flatErrors = [];
@@ -37,7 +40,7 @@ export const formStore = {
     return flatErrors;
   },
   setModel(model) {
-    if (this.debug) console.log("formStore.setModel triggered with: " + JSON.stringify(model, null, 2));
+    this.debug("formStore.setModel triggered with: " + JSON.stringify(model, null, 2));
     this.setValues({ base: model.base, desktop: model.desktop, tablet: model.tablet })
 
     if (!this.state.model) {
@@ -45,8 +48,6 @@ export const formStore = {
       this.state.model.base = this.state.savedValues.base
       this.state.model.tablet = this.state.savedValues.tablet
       this.state.model.desktop = this.state.savedValues.desktop
-      console.log("formStore.setModel final model: "+ JSON.stringify(model, null, 2));
-      console.log("formStore.setModel final this.state.model: "+ JSON.stringify(this.state.model, null, 2));
     }
 
   },
@@ -58,9 +59,8 @@ export const formStore = {
       desktop: {},
       tablet: {}
     }
-    if (this.debug) console.log('formStore.setSavedValues triggered with: ' + JSON.stringify(values, null, 2))
+    this.debug('formStore.setSavedValues triggered with: ' + JSON.stringify(values, null, 2))
 
-    console.log("Object.keys(values): " + Object.keys(values));
     Object.keys(values).forEach((curBreakpoint) => values[curBreakpoint] && Object.keys(values[curBreakpoint]).forEach(curBoxEdge => {
       newErrors[curBreakpoint][curBoxEdge] = undefined;
 
@@ -72,7 +72,6 @@ export const formStore = {
       }
       const curFieldValue = values[curBreakpoint][curBoxEdge];
       
-      console.log("formStore setValues curFieldValue: " + curFieldValue)
       if (curFieldValue === undefined) {
         newValues[curBreakpoint][curBoxEdge] = undefined;
         newSavedValues[curBreakpoint][curBoxEdge] = undefined
@@ -112,9 +111,6 @@ export const formStore = {
         newSavedValues[curBreakpoint][curBoxEdge] = { amount: amountAsNumber, unit: curFieldValue.unit }
       } 
     }))
-    console.log("end: newValues: " + JSON.stringify(newValues, null, 2))
-    console.log("end: newSavedValues: " + JSON.stringify(newSavedValues, null, 2))
-    console.log("end: newErrors: " + JSON.stringify(newErrors, null, 2))
     
     window.Storyblok.vue.set(this.state, "errors", newErrors)
     window.Storyblok.vue.set(this.state, "values", newValues)
@@ -127,13 +123,13 @@ export const formStore = {
     }
   },
   setConfig(pluginConfig) {
-    if (this.debug) console.log('formStore.setConfig triggered with: ' + JSON.stringify(pluginConfig, null, 2))
+    this.debug('formStore.setConfig triggered with: ' + JSON.stringify(pluginConfig, null, 2));
     
     window.Storyblok.vue.set(this.state, "config", pluginConfig);
   },
   setSelectedBreakpoint(breakpoint) {
-    if (this.debug) console.log("formStore.setSelectedBreakpoint triggered with: " + breakpoint);
+    this.debug("formStore.setSelectedBreakpoint triggered with: " + breakpoint);
     
     window.Storyblok.vue.set(this.state, "selectedBreakpoint", breakpoint);
-  }
+  },
 };

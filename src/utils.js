@@ -80,7 +80,7 @@ export const getStyleValueFromString = (value) => {
     matchesList[2] === undefined ||
     !SUPPORTED_STYLE_UNITS.includes(matchesList[2])
   ) {
-    throw Error("Invalid value given for defaultsValues: " + value);
+    throw Error("Invalid value given for getStyleValueFromString: " + value);
   }
 
   return {

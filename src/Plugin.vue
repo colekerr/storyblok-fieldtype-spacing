@@ -1,10 +1,5 @@
 <template>
   <div class="uk-form">
-    <div class="uk-form-row">
-      <label>Meta Title</label>
-      <input type="text" placeholder="Your title" v-model="model.title" class="uk-width-1-1">
-    </div>
-
     <!-- choose breakpoint -->
     <breakpoint-select />
     <!-- field 1 -->
@@ -32,11 +27,17 @@
 </template>
 
 <script>
+import BreakpointSelect from './BreakpointSelect.vue'
 import { formStore } from "./store.js";
 import { getBoxEdgesFromLiteral, getStyleValueFromString } from "./utils.js"
+import SpacingField from './SpacingField.vue'
 import { SUPPORTED_STYLE_UNITS } from './constants';
 
 export default {
+  components: {
+    'spacing-field': SpacingField,
+    'breakpoint-select': BreakpointSelect,
+  },
   data() {
     return {
       formStore
@@ -45,9 +46,17 @@ export default {
   mixins: [window.Storyblok.plugin],
   methods: {
     initWith() {
-      // console.log('initWith this.options: ' + JSON.stringify(this.options));
-
-      const enabledBoxEdges = getBoxEdgesFromLiteral(this.options.enabledBoxEdges)
+      return {
+        // needs to be equal to your storyblok plugin name
+        plugin: 'spacing-responsive',
+        base: undefined,
+        tablet: undefined,
+        desktop: undefined,
+      }
+    },
+    pluginCreated() {
+      formStore.setModel(this.model);
+      const enabledBoxEdges = getBoxEdgesFromLiteral(this.options.enabledBoxEdges);
 
       this.selectedBreakpoint = "base";
 
@@ -56,21 +65,11 @@ export default {
           boxEdges: enabledBoxEdges,
           styleUnits: SUPPORTED_STYLE_UNITS,
         },
-      }
+      };
 
       formStore.setSelectedBreakpoint(this.selectedBreakpoint);
       formStore.setConfig(this.pluginConfig);
 
-      return {
-        // needs to be equal to your storyblok plugin name
-        plugin: 'spacing-responsive',
-        title: '',
-        description: '',
-        ...formStore.state.savedValues
-      }
-    },
-    pluginCreated() {
-      // eslint-disable-next-line
       const initialValues = {
         base: this.options.defaultBaseValues && {
           bottom: this.model.base ? this.model.base.bottom : getStyleValueFromString(this.options.defaultBaseValues.split(" ")[0]),
@@ -91,35 +90,34 @@ export default {
           top: this.model.tablet ? this.model.tablet.top : getStyleValueFromString(this.options.defaultTabletValues.split(" ")[0]),
         },
       }
-      // console.log("pluginCreated initialValues: " + JSON.stringify(initialValues, null, 2))
-      formStore.setValues(initialValues)
-      formStore.setModel(this.model);
-
-      // console.log('View source and customize: https://github.com/storyblok/storyblok-fieldtype');
+      formStore.setValues(initialValues);
     }
   },
   watch: {
-    'model': {
-      handler: function (model) {
-        // const isTitleValid = model.title.length > 0;
-        // const isDescriptionValid = model.description.length > 0;
-
-        // console.log('watch.model.handler model: ', model)
-        // console.log('watch.model.handler this.options: ', this.options)
-        // console.log('watch.model.handler this.pluginConfig: ', this.pluginConfig)
-        // console.log('watch.model.handler isTitleValid: ', isTitleValid)
-        // console.log('watch.model.handler isDescriptionValid: ', isDescriptionValid)
-        
+    'formStore': {
+      handler: function (formStore) {       
         const fieldErrors = formStore.getErrors();
-        const isModelValid = fieldErrors.length === 0
+        const isModelValid = fieldErrors.length === 0;
         
         if (!isModelValid) { 
-          // console.log("watch.model.handler fieldErrors: " + JSON.stringify(fieldErrors, null, 2))
+          return;
+        }
+        this.$emit('changed-model', formStore.state.model);
+
+      },
+      deep: true,
+    },
+    'model': {
+      handler: function (model) {
+        const fieldErrors = formStore.getErrors();
+        const isModelValid = fieldErrors.length === 0;
+        
+        if (!isModelValid) { 
           return;
         }
         this.$emit('changed-model', model);
       },
-      deep: true
+      deep: true,
     }
   }
 }
@@ -130,7 +128,6 @@ export default {
   border: 1px solid #d5d5d5 !important;
   border-radius: 2px !important;
   box-sizing: border-box;
-  margin-bottom: 15px !important;
   width: 100% !important;
 }
 .efub-unit-field--error, 
@@ -179,4 +176,5 @@ export default {
 .efub-unit-field__select {
   border-left: 1px solid #d5d5d5 !important;
   padding-right: 15px !important;
-}</style>
+}
+</style>

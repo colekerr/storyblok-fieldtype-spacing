@@ -12,9 +12,9 @@
 import { formStore } from "./store.js";
 
 const BREAKPOINTS_CONFIGS =  [
-  { ui_text: "Base", value: "base", },
-  { ui_text: "Tablets and wider", value: "tablet", },
-  { ui_text: "Desktop and wider", value: "desktop", },
+  { ui_text: "Base", value: "base" },
+  { ui_text: "Tablets and wider", value: "tablet" },
+  { ui_text: "Desktop and wider", value: "desktop" },
 ];
 
 export default {

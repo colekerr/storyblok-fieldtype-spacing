@@ -27,32 +27,32 @@
 </template>
 
 <script>
-import BreakpointSelect from './BreakpointSelect.vue'
+import BreakpointSelect from "./BreakpointSelect.vue";
 import { formStore } from "./store.js";
-import { getBoxEdgesFromLiteral, getStyleValueFromString } from "./utils.js"
-import SpacingField from './SpacingField.vue'
-import { SUPPORTED_STYLE_UNITS } from './constants';
+import { getBoxEdgesFromLiteral, getStyleValueFromString } from "./utils.js";
+import SpacingField from "./SpacingField.vue";
+import { SUPPORTED_STYLE_UNITS } from "./constants";
 
 export default {
   components: {
-    'spacing-field': SpacingField,
-    'breakpoint-select': BreakpointSelect,
+    "spacing-field": SpacingField,
+    "breakpoint-select": BreakpointSelect,
   },
   data() {
     return {
       formStore
-    }
+    };
   },
   mixins: [window.Storyblok.plugin],
   methods: {
     initWith() {
       return {
         // needs to be equal to your storyblok plugin name
-        plugin: 'spacing-responsive',
+        plugin: "spacing-responsive",
         base: undefined,
         tablet: undefined,
         desktop: undefined,
-      }
+      };
     },
     pluginCreated() {
       formStore.setModel(this.model);
@@ -89,7 +89,7 @@ export default {
           right: this.model.tablet ? this.model.tablet.right : getStyleValueFromString(this.options.defaultTabletValues.split(" ")[1]),
           top: this.model.tablet ? this.model.tablet.top : getStyleValueFromString(this.options.defaultTabletValues.split(" ")[0]),
         },
-      }
+      };
       formStore.setValues(initialValues);
     }
   },
@@ -118,9 +118,9 @@ export default {
         this.$emit('changed-model', model);
       },
       deep: true,
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style>

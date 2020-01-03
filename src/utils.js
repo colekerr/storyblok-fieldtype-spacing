@@ -2,13 +2,11 @@ import { BOX_EDGES, SUPPORTED_STYLE_UNITS, TRBL_KEYS_LIST } from "./constants.js
 
 const DEFAULT_ENABLED_BOX_EDGES_CONFIG = [...BOX_EDGES];
 
-const _checkIsValidBoxEdgeList =(
-  validList,
-  list
-) => {
+const _checkIsValidBoxEdgeList = (validList, list) => {
   const nonsenseValue = list.find(
     curListItem => !validList.includes(curListItem)
   );
+
   if (nonsenseValue !== undefined) {
     throw Error(
       `Nonsense box edge value detected from enabledBoxEdges: ${nonsenseValue}`
@@ -17,19 +15,19 @@ const _checkIsValidBoxEdgeList =(
   return true;
 };
 
-const _getCleanedStringFromOption = (option) =>
+const _getCleanedStringFromOption = option =>
   (option || "")
     .toLowerCase()
     .trim()
     .replace(/\s+/g, " ");
 
-const _getListFromListLiteral = (literal) => {
+const _getListFromListLiteral = literal => {
   const cleanedLiteralString = _getCleanedStringFromOption(literal);
 
   return cleanedLiteralString.split(" ");
 };
 
-export const getBoxEdgesFromLiteral = (literal) => {
+export const getBoxEdgesFromLiteral = literal => {
   if (literal === undefined || literal === "") {
     return DEFAULT_ENABLED_BOX_EDGES_CONFIG;
   }
@@ -59,20 +57,20 @@ export const getBoxEdgesFromLiteral = (literal) => {
       ...(["yes", "true"].includes(list[trblKeys[1]])
         ? (["right"])
         : []),
-      ...(["yes", "true"].includes(list[trblKeys[0]]) ? (["top"]) : [])
+      ...(["yes", "true"].includes(list[trblKeys[0]]) 
+        ? (["top"]) 
+        : []),
     ];
   }
   return DEFAULT_ENABLED_BOX_EDGES_CONFIG;
 };
 
-export const getStyleValueFromString = (value) => {
+export const getStyleValueFromString = value => {
   if (typeof value !== "string" || value === "_") {
     return undefined;
   }
 
-  const regex = new RegExp(
-    `^(-?\\d*\\.?\\d+)(${SUPPORTED_STYLE_UNITS.join("|")})?$`
-  );
+  const regex = new RegExp(`^(-?\\d*\\.?\\d+)(${SUPPORTED_STYLE_UNITS.join("|")})?$`);
   const [matchesList] = Array.from(value.trim().matchAll(regex));
 
   if (
@@ -85,9 +83,9 @@ export const getStyleValueFromString = (value) => {
 
   return {
     amount: parseFloat(matchesList[1]),
-    unit: matchesList[2]
+    unit: matchesList[2],
   };
-}
+};
 
 export const getValidValues = (errorsTrbl, trblValue) => {
   if (!errorsTrbl) return trblValue;
@@ -95,8 +93,10 @@ export const getValidValues = (errorsTrbl, trblValue) => {
   return Object.keys(trblValue).reduce(
     (acc, curBoxEdge) => ({
       ...acc,
-      ...(errorsTrbl[curBoxEdge] ? {} : trblValue)
+      ...(errorsTrbl[curBoxEdge] 
+        ? {} 
+        : trblValue)
     }),
     {}
   );
-}
+};

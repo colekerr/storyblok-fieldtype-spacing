@@ -56,7 +56,7 @@ export default {
       formStore.setValues(
         {
           [selectedBreakpoint]: {
-            [this.boxEdge]: { amount: evt.target.value, unit: this.privateState.unit}
+            [this.boxEdge]: { amount: evt.target.value, unit: this.privateState.unit },
           },
         },
       );
@@ -66,7 +66,7 @@ export default {
       formStore.setValues(
         {
           [selectedBreakpoint]: {
-            [this.boxEdge]: { amount: this.privateState.amount, unit: evt.target.value }
+            [this.boxEdge]: { amount: this.privateState.amount, unit: evt.target.value },
           },
         },
       );

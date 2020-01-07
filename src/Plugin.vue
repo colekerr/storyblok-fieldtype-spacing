@@ -1,35 +1,36 @@
 <template>
-  <div class="uk-form">
-    <!-- choose breakpoint -->
-    <breakpoint-select />
-    <!-- field 1 -->
-    <spacing-field
-      v-if="pluginConfig.enabled.boxEdges.includes('bottom')"
-      :boxEdge="'bottom'"
-    />
-    <!-- field 2 -->
-    <spacing-field
-      v-if="pluginConfig.enabled.boxEdges.includes('top')"
-      :boxEdge="'top'"
-    />
-    <!-- field 3 -->
-    <spacing-field
-      v-if="pluginConfig.enabled.boxEdges.includes('right')"
-      :boxEdge="'right'"
-    />
-    <!-- field 4 -->
-    <spacing-field
-      v-if="pluginConfig.enabled.boxEdges.includes('left')"
-      :boxEdge="'left'"
-    />
 
-  </div>
+<div class="uk-form">
+  <!-- Breakpoint Select -->
+  <breakpoint-select />
+  <!-- Bottom Box Edge Input -->
+  <spacing-field
+    v-if="pluginConfig.enabled.boxEdges.includes('bottom')"
+    :boxEdge="'bottom'"
+  />
+  <!-- Top Box Edge Input -->
+  <spacing-field
+    v-if="pluginConfig.enabled.boxEdges.includes('top')"
+    :boxEdge="'top'"
+  />
+  <!-- Left Box Edge Input -->
+  <spacing-field
+    v-if="pluginConfig.enabled.boxEdges.includes('left')"
+    :boxEdge="'left'"
+  />
+  <!-- Right Box Edge Input -->
+  <spacing-field
+    v-if="pluginConfig.enabled.boxEdges.includes('right')"
+    :boxEdge="'right'"
+  />
+</div>
+
 </template>
-
 <script>
+
 import BreakpointSelect from "./BreakpointSelect.vue";
 import { formStore } from "./store.js";
-import { getBoxEdgesFromLiteral, getDefaultValuesFromLiteral, getEnabledDefaultValues, getStyleValueFromString } from "./utils.js";
+import { getBoxEdgesFromLiteral, getDefaultValuesFromLiteral, getEnabledDefaultValues } from "./utils.js";
 import SpacingField from "./SpacingField.vue";
 import { SUPPORTED_STYLE_UNITS } from "./constants";
 
@@ -161,60 +162,72 @@ export default {
     },
   },
 };
-</script>
 
+</script>
 <style>
-.efub-unit-field {
+
+.efub-field {
   border: 1px solid #d5d5d5 !important;
   border-radius: 2px !important;
   box-sizing: border-box;
   width: 100% !important;
 }
-.efub-unit-field--error, 
-.efub-unit-field--error:not(:focus-within) .efub-unit-field__select {
+
+.efub-field--error, 
+.efub-field--error:not(:focus-within) .efub-field__select {
   border-color: red !important;
 }
 
-.efub-unit-field__input {
+.efub-field__label {
+  display: block;
+  color: #666;
+  font-size: 0.95em;
+  font-style: italic;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.efub-field__input {
   border-right: 0 !important;
   border-bottom-right-radius: 0 !important;
   border-top-right-radius: 0 !important;
 }
 
-.efub-unit-field__error-message {
+.efub-field__error-message {
   color: red !important;
 }
 
-.efub-unit-field__input--disabled,
-.efub-unit-field__select--disabled {
+.efub-field__input--disabled,
+.efub-field__select--disabled {
   background-color: #ddd !important;
 }
 
-.efub-unit-field__input,
-.efub-unit-field__select {
+.efub-field__input,
+.efub-field__select {
   border: 0 !important;
 }
 
-.efub-unit-field:focus-within {
+.efub-field:focus-within {
   border-color: #09b3af !important;
 }
 
-.efub-unit-field:focus-within .efub-unit-field__select,
-.efub-unit-field:focus-within .efub-unit-field__input {
+.efub-field:focus-within .efub-field__select,
+.efub-field:focus-within .efub-field__input {
   background-color: #f2f9f8 !important;
 }
 
-.efub-unit-field:focus-within .efub-unit-field__select option {
+.efub-field:focus-within .efub-field__select option {
   background-color: #fff !important;
 }
 
-.efub-unit-field__select,
-.efub-unit-field__select option {
+.efub-field__select,
+.efub-field__select option {
   cursor: pointer !important;
 }
 
-.efub-unit-field__select {
+.efub-field__select {
   border-left: 1px solid #d5d5d5 !important;
   padding-right: 15px !important;
 }
+
 </style>

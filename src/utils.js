@@ -48,6 +48,9 @@ export const getBoxEdgesFromLiteral = literal => {
   }
 
   // check if option literal is a shorthand
+  if (literal === "all") {
+    return ["bottom", "left", "right", "top"];
+  }
   if (literal === "horizontal") {
     return ["left", "right"];
   }

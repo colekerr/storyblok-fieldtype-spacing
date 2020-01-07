@@ -1,20 +1,26 @@
 <template>
-  <!-- div 1 -->
-  <div class="uk-form-row" v-if="boxEdge">
-    <label class="uk-form-label">{{ label }}</label>
-    <div class="efub-unit-field" v-bind:class="{ 'efub-unit-field--error': privateState.error }">
-      <input v-model="privateState.amount" @input="onChangeAmount($event)" type="number" class="efub-unit-field__input uk-width-3-4" />
-      <select v-model="privateState.unit"  @change="onChangeUnit($event)" class="uk-width-1-4 efub-unit-field__select">
-        <!-- <option v-on:click="" selected disabled hidden style='display: none' value=''></option> -->
-        <option disabled hidden style="display: none" value></option>
-        <option v-for="styleUnit in styleUnits" v-bind:key="styleUnit.value" :value="styleUnit.value">{{styleUnit.value}}</option>
-      </select>
-    </div>
-    <div v-if="privateState.error" class="efub-unit-field__error-message">{{privateState.error}}</div>
-  </div>
-</template>
 
+<div class="uk-form-row" v-if="boxEdge">
+  <label class="efub-field__label">{{ label }}</label>
+  <div class="efub-field" v-bind:class="{ 'efub-field--error': privateState.error }">
+    <input v-model="privateState.amount" @input="onChangeAmount($event)" type="number" class="efub-field__input uk-width-3-4" />
+    <select v-model="privateState.unit"  @change="onChangeUnit($event)" class="uk-width-1-4 efub-field__select">
+      <!-- <option v-on:click="" selected disabled hidden style='display: none' value=''></option> -->
+      <option disabled hidden style="display: none" value></option>
+      <option v-for="styleUnit in styleUnits" v-bind:key="styleUnit.value" :value="styleUnit.value">{{styleUnit.value}}</option>
+    </select>
+  </div>
+  <div 
+    v-if="privateState.error" 
+    class="efub-field__error-message"
+  >
+    {{privateState.error}}
+  </div>
+</div>
+
+</template>
 <script>
+
 import { BOX_EDGES, SUPPORTED_STYLE_UNITS } from "./constants.js";
 import { formStore } from "./store.js";
 
@@ -82,4 +88,5 @@ export default {
     },
   },
 };
+
 </script>

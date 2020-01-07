@@ -29,7 +29,7 @@
 <script>
 import BreakpointSelect from "./BreakpointSelect.vue";
 import { formStore } from "./store.js";
-import { getBoxEdgesFromLiteral, getStyleValueFromString } from "./utils.js";
+import { getBoxEdgesFromLiteral, getDefaultValuesFromLiteral, getEnabledDefaultValues, getStyleValueFromString } from "./utils.js";
 import SpacingField from "./SpacingField.vue";
 import { SUPPORTED_STYLE_UNITS } from "./constants";
 
@@ -56,11 +56,19 @@ export default {
     },
     pluginCreated() {
       formStore.setModel(this.model);
+      
       const enabledBoxEdges = getBoxEdgesFromLiteral(this.options.enabledBoxEdges);
+
+      const defaultValues = {
+        base: getEnabledDefaultValues(enabledBoxEdges, getDefaultValuesFromLiteral("defaultBaseValues", this.options.defaultBaseValues)),
+        desktop: getEnabledDefaultValues(enabledBoxEdges, getDefaultValuesFromLiteral("defaultDesktopValues", this.options.defaultDesktopValues)),
+        tablet: getEnabledDefaultValues(enabledBoxEdges, getDefaultValuesFromLiteral("defaultTabletValues", this.options.defaultTabletValues)),
+      };
 
       this.selectedBreakpoint = "base";
 
       this.pluginConfig = {
+        defaults: defaultValues,
         enabled: {
           boxEdges: enabledBoxEdges,
           styleUnits: SUPPORTED_STYLE_UNITS,
@@ -72,24 +80,56 @@ export default {
 
       const initialValues = {
         base: this.options.defaultBaseValues && {
-          bottom: this.model.base ? this.model.base.bottom : getStyleValueFromString(this.options.defaultBaseValues.split(" ")[0]),
-          left: this.model.base ? this.model.base.left : getStyleValueFromString(this.options.defaultBaseValues.split(" ")[1]),
-          right: this.model.base ? this.model.base.right : getStyleValueFromString(this.options.defaultBaseValues.split(" ")[1]),
-          top: this.model.base ? this.model.base.top : getStyleValueFromString(this.options.defaultBaseValues.split(" ")[0]),
+          bottom: this.model.base 
+            ? this.model.base.bottom 
+            : this.pluginConfig.defaults.base.bottom,
+          left: this.model.base 
+            ? this.model.base.left 
+            : this.pluginConfig.defaults.base.left,
+          right: this.model.base 
+            ? this.model.base.right 
+            : this.pluginConfig.defaults.base.right,
+          top: this.model.base 
+            ? this.model.base.top 
+            : this.pluginConfig.defaults.base.top,
         },
         desktop: this.options.defaultDesktopValues && {
-          bottom: this.model.desktop ? this.model.desktop.bottom : getStyleValueFromString(this.options.defaultDesktopValues.split(" ")[0]),
-          left: this.model.desktop ? this.model.desktop.left : getStyleValueFromString(this.options.defaultDesktopValues.split(" ")[1]),
-          right: this.model.desktop ? this.model.desktop.right : getStyleValueFromString(this.options.defaultDesktopValues.split(" ")[1]),
-          top: this.model.desktop ? this.model.desktop.top : getStyleValueFromString(this.options.defaultDesktopValues.split(" ")[0]),
+          bottom: this.model.desktop 
+            ? this.model.desktop.bottom 
+            : this.pluginConfig.defaults.desktop.bottom,
+          left: this.model.desktop 
+            ? this.model.desktop.left 
+            : this.pluginConfig.defaults.desktop.left,
+          right: this.model.desktop 
+            ? this.model.desktop.right 
+            : this.pluginConfig.defaults.desktop.right,
+          top: this.model.desktop 
+            ? this.model.desktop.top 
+            : this.pluginConfig.defaults.desktop.top,
         },
         tablet: this.options.defaultTabletValues && {
-          bottom: this.model.tablet ? this.model.tablet.bottom : getStyleValueFromString(this.options.defaultTabletValues.split(" ")[0]),
-          left: this.model.tablet ? this.model.tablet.left : getStyleValueFromString(this.options.defaultTabletValues.split(" ")[1]),
-          right: this.model.tablet ? this.model.tablet.right : getStyleValueFromString(this.options.defaultTabletValues.split(" ")[1]),
-          top: this.model.tablet ? this.model.tablet.top : getStyleValueFromString(this.options.defaultTabletValues.split(" ")[0]),
+          bottom: this.model.tablet 
+            ? this.model.tablet.bottom 
+            : this.pluginConfig.defaults.tablet.bottom,
+          left: this.model.tablet 
+            ? this.model.tablet.left 
+            : this.pluginConfig.defaults.tablet.left,
+          right: this.model.tablet 
+            ? this.model.tablet.right 
+            : this.pluginConfig.defaults.tablet.right,
+          top: this.model.tablet 
+            ? this.model.tablet.top 
+            : this.pluginConfig.defaults.tablet.top,
         },
       };
+      Object.keys(initialValues).forEach(curBreakpoint => {
+        if (!initialValues[curBreakpoint]) {
+          return;
+        }
+        if (!Object.values(initialValues[curBreakpoint]).some(curBoxEdgeValue => curBoxEdgeValue !== undefined)) {
+          initialValues[curBreakpoint] = undefined;
+        }
+      })
       formStore.setValues(initialValues);
     }
   },

@@ -3,9 +3,19 @@
 <div class="uk-form-row" v-if="boxEdge">
   <label class="efub-field__label">{{ label }}</label>
   <div class="efub-field" v-bind:class="{ 'efub-field--error': privateState.error }">
-    <input v-model="privateState.amount" @input="onChangeAmount($event)" type="number" class="efub-field__input uk-width-3-4" />
-    <select v-model="privateState.unit"  @change="onChangeUnit($event)" class="uk-width-1-4 efub-field__select">
-      <!-- <option v-on:click="" selected disabled hidden style='display: none' value=''></option> -->
+    <input 
+      v-model="privateState.amount" 
+      v-bind:class="{ 'uk-width-3-4': privateState.amount !== '', 'uk-width-4-4': privateState.amount === '' }"
+      @input="onChangeAmount($event)" 
+      type="number" 
+      class="efub-field__input" 
+    />
+    <select 
+      v-model="privateState.unit"  
+      @change="onChangeUnit($event)" 
+      class="uk-width-1-4 efub-field__select efub-field__select--secondary"
+      :disabled="privateState.amount === ''"
+    >
       <option disabled hidden style="display: none" value></option>
       <option v-for="styleUnit in styleUnits" v-bind:key="styleUnit.value" :value="styleUnit.value">{{styleUnit.value}}</option>
     </select>

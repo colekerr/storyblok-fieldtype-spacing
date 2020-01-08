@@ -167,30 +167,45 @@ export default {
 <style>
 
 .efub-field {
+  background: #fff !important;
   border: 1px solid #d5d5d5 !important;
   border-radius: 2px !important;
   box-sizing: border-box;
+  height: 44px !important;
+  overflow: hidden !important;
   width: 100% !important;
 }
 
+.efub-field:focus-within {
+  background-color: #f2f9f8 !important;
+  border-color: #09b3af !important;
+}
+
+.efub-field:focus-within .efub-field__select option {
+  background-color: #fff !important;
+}
+
 .efub-field--error, 
-.efub-field--error:not(:focus-within) .efub-field__select {
+.efub-field--error:not(:focus-within) .efub-field__input {
   border-color: red !important;
 }
 
-.efub-field__label {
-  display: block;
-  color: #666;
-  font-size: 0.95em;
-  font-style: italic;
-  font-weight: 600;
-  margin-bottom: 5px;
+.efub-field__input {
+  background: none !important;
+  border: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  border-right: 1px solid #d5d5d5 !important;
+  border-top-right-radius: 0 !important;
+  transition: all 0.2s ease, border-right 0s linear 0.2s !important;
 }
 
-.efub-field__input {
+.efub-field__input.uk-width-4-4 {
   border-right: 0 !important;
-  border-bottom-right-radius: 0 !important;
-  border-top-right-radius: 0 !important;
+}
+
+.efub-field__input,
+.efub-field__select--secondary {
+  background-color: transparent !important;
 }
 
 .efub-field__error-message {
@@ -202,22 +217,17 @@ export default {
   background-color: #ddd !important;
 }
 
-.efub-field__input,
+.efub-field__label {
+  display: block;
+  color: #666;
+  font-size: 0.95em;
+  font-style: italic;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
 .efub-field__select {
   border: 0 !important;
-}
-
-.efub-field:focus-within {
-  border-color: #09b3af !important;
-}
-
-.efub-field:focus-within .efub-field__select,
-.efub-field:focus-within .efub-field__input {
-  background-color: #f2f9f8 !important;
-}
-
-.efub-field:focus-within .efub-field__select option {
-  background-color: #fff !important;
 }
 
 .efub-field__select,
@@ -225,9 +235,12 @@ export default {
   cursor: pointer !important;
 }
 
-.efub-field__select {
-  border-left: 1px solid #d5d5d5 !important;
+.efub-field__select--secondary {
   padding-right: 15px !important;
+}
+
+.efub-field__select--secondary:disabled {
+  display: none !important;
 }
 
 </style>

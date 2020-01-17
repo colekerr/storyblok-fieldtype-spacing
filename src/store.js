@@ -52,6 +52,7 @@ export const formStore = {
     }
   },
   setValues(values) {
+    this.debug("formStore.setSavedValues triggered with: " + JSON.stringify(values, null, 2));
     const newValues = { ...this.state.savedValues };
     const newSavedValues = { ...this.state.savedValues };
     const newErrors = { 
@@ -59,7 +60,6 @@ export const formStore = {
       desktop: {},
       tablet: {},
     };
-    this.debug("formStore.setSavedValues triggered with: " + JSON.stringify(values, null, 2));
 
     Object.keys(values).forEach((curBreakpoint) => values[curBreakpoint] && Object.keys(values[curBreakpoint]).forEach(curBoxEdge => {
       newErrors[curBreakpoint][curBoxEdge] = undefined;

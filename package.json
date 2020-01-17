@@ -1,10 +1,10 @@
 {
-  "name": "storyblok-fieldtype",
-  "description": "A Storyblok Field-Type Plugin Project",
+  "name": "storyblok-fieldtype-spacing",
+  "description": "Storyblok Field-Type Plugin for defining responsive spacing styles",
   "author": {
-    "name": "Storyblok",
-    "email": "it@storyblok.com",
-    "url": "https://www.storyblok.com/"
+    "name": "Cole Kerr",
+    "email": "colekerr@gmail.com",
+    "url": "https://github.com/colekerr"
   },
   "contributors": [
     {
